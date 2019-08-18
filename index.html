@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <!--<script src='main.js'></script>-->
+    <script type="text/javascript" src="html5-canvas-drawing-app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+    <body><center>
+        <div id="contrastFilter">
+            <canvas id="canvas" style="border: 2px solid black"></canvas>
+        </div>
+        <div id="contrastSlider">
+            <input id="contrast" type="range" value="contrast" max="1" min="0.5" step="0.01"/>
+        </div>
+        <canvas id="canvasInAPerfectWorld" width="240" height="200" style="border: 2px solid black"></canvas>
+        <div id="canvasDiv"></div>
+
+        <!--<image id="theimage" width="240" height="200"></image>-->
+
+        <button type="button" onclick="pageRedirect()">Proceed</button>
+
+        
+
+    </body></center>
+    
+    <script>
+        drawingApp.init();
+            function pageRedirect() {
+            // var canvas = document.getElementById("canvasInAPerfectWorld");
+            // document.getElementById("theimage").src = canvas.toDataURL();
+            // Canvas2Image.saveAsPNG(canvas);
+           
+            //window.location.href = "page2.html";
+
+            // var image = canvas.toDataURL();        // create temporary link
+            // var tmpLink = document.createElement( 'a' );
+            // tmpLink.download = 'image.png'; // set the name of the download file
+            // tmpLink.href = image;        // temporarily add link to body and initiate the download
+            // document.body.appendChild( tmpLink );
+            // tmpLink.click();
+            // document.body.removeChild( tmpLink ); 
+
+            var canvas = document.getElementById("canvasInAPerfectWorld");
+            image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var link = document.createElement('a');
+            link.download = "my-image.png";
+            link.href = image;
+            link.click();
+
+            // sessionStorage.setItem("img", link.download);
+
+            //document.getElementById("canvasDiv2").value = document.getElementById("canvasDiv").innerHTML;
+        }      
+        window.onload = function () {
+    
+            // GET THE IMAGE.
+            var img = new Image();
+            img.src = 'img1.jpg';
+            sessionStorage.setItem("imgsrc", img.src);
+            img.width = '240';
+            img.height = '200';
+         
+            // WAIT TILL IMAGE IS LOADED.
+            img.onload = function () {
+                fill_canvas(img);       // FILL THE CANVAS WITH THE IMAGE.
+            }
+    
+            function fill_canvas(img) {
+                // CREATE CANVAS CONTEXT.
+                var canvas = document.getElementById('canvas');
+                //var dataUrl = canvas.toDataURL();
+                //sessionStorage.setItem("dataUrl", dataUrl);
+
+                var context = canvas.getContext('2d');
+    
+                canvas.width = img.width;
+                canvas.height = img.height;
+    
+                context.drawImage(img,0,0,img.width,img.height);       // DRAW THE IMAGE TO THE CANVAS.
+            }
+        }
+        $('#contrast').on('input', function() {
+                $('#contrastFilter').css('opacity', $(this).val());
+        });
+
+        
+    </script>
+</html>
